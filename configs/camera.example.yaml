@@ -1,0 +1,146 @@
+source:
+  mode: snapshot
+  uri: "http://camera-address/jpg/image.jpg"
+  target_fps: 10
+  snapshot_timeout_s: 5
+  reconnect_delay_s: 1
+  startup_timeout_s: 15
+  max_frame_age_s: 5
+  youtube_max_height: 720
+  youtube_cookies_from_browser: null
+
+model:
+  weights: "yolo12n.pt"
+  device: "auto"
+  confidence: 0.40
+  iou: 0.50
+  image_size: 640
+  tracker: "bytetrack.yaml"
+  # COCO baseline: person=0, train=6, animals=14..23, luggage=24/26/28,
+  # baseball bat=34, knife=43, scissors=76.
+  classes: [0, 6, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 28, 34, 43, 76]
+  quantize: null
+
+analytics:
+  roi: null
+  person_class_ids: [0]
+  reference_point: "bottom_center"
+  tail_length: 60
+  track_ttl_s: 3.0
+  scene_area_m2: null
+
+  zones: null
+  line_crossings: null
+  restricted_zones: null
+  crowd_zones: null
+
+  luggage:
+    enabled: true
+    person_class_ids: [0]
+    object_class_ids: [24, 26, 28]
+    stationary_s: 4.0
+    unattended_s: 15.0
+    max_motion_norm: 0.018
+    association_distance_norm: 0.12
+    association_confirm_s: 0.6
+    owner_distance_norm: 0.16
+    owner_missing_grace_s: 2.0
+    owner_reassociation_window_s: 3.0
+    owner_reassociation_distance_norm: 0.08
+    owner_reassociation_confirm_s: 0.4
+    # false = segnala anche un bagaglio gia solo quando entra nell inquadratura.
+    # true = segnala solo dopo aver osservato prima un proprietario associato.
+    require_owner_association: false
+    cooldown_s: 60.0
+
+  # Calibrate the tracks polygon before enabling. UNKNOWN is fail-safe and
+  # never authorizes a guarded yellow-line alert.
+  train:
+    enabled: false
+    class_ids: [6]
+    polygon: null
+    present_confirm_s: 0.5
+    absent_confirm_s: 2.0
+
+  animal:
+    enabled: false
+    animal_class_ids: [14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+    association_distance_norm: 0.18
+    supervision_distance_norm: 0.24
+    owner_missing_grace_s: 2.0
+    unsupervised_s: 10.0
+    require_owner_association: true
+    cooldown_s: 60.0
+
+  # Litter/degradation and vandalism require class IDs from custom weights.
+  litter:
+    enabled: false
+    class_ids: []
+    polygon: null
+    stationary_s: 3.0
+    persist_s: 10.0
+    max_motion_norm: 0.018
+    cooldown_s: 60.0
+
+  dangerous_objects:
+    enabled: false
+    class_ids: [34, 43, 76]
+    polygon: null
+    confirm_s: 0.5
+    cooldown_s: 30.0
+
+  vandalism:
+    enabled: false
+    class_ids: []
+    polygon: null
+    confirm_s: 1.5
+    cooldown_s: 60.0
+
+  fall_on_tracks:
+    enabled: false
+    polygon: null
+    person_class_ids: [0]
+    horizontal_ratio: 1.15
+    min_vertical_drop_norm: 0.06
+    confirm_s: 1.0
+    cooldown_s: 60.0
+
+  health:
+    enabled: true
+    offline_after_s: 8.0
+    black_luma_threshold: 5.0
+    black_after_s: 3.0
+    frozen_mean_delta: 0.35
+    frozen_after_s: 10.0
+    blur_variance_threshold: 4.0
+    blur_after_s: 5.0
+    low_fps_threshold: 1.0
+    low_fps_after_s: 10.0
+    cooldown_s: 60.0
+
+output:
+  display: true
+  window_name: "EAV Smart Station Analytics"
+  display_scale: 1.0
+  video_path: "outputs/session.mp4"
+  video_fps: null
+  jsonl_path: "outputs/metrics.jsonl"
+  event_frames_dir: "outputs/event_frames"
+  draw_tails: true
+  show_confidence: true
+  status_every_s: 2.0
+
+# Validated local output for Team B.  Keep disabled until the real camera to
+# platform/location mapping is known.  This block does not use MQTT and does
+# not send data over the network.
+team_b:
+  enabled: false
+  platform_id: null
+  specific_location: null
+  source_device_id: null
+  people_flow_every_s: 5.0
+  people_flow_jsonl_path: "outputs/team_b_people_flow.jsonl"
+  events_jsonl_path: "outputs/team_b_events.jsonl"
+  event_id_db_path: "outputs/team_b_state.sqlite3"
+  yellow_line_names: []
+  restricted_zone_names: []

@@ -1,0 +1,56 @@
+# Copy the desired sections into configs/camera.local.yaml after calibrating
+# normalized coordinates with roi_editor.py or line_editor.py.
+analytics:
+  roi: null
+
+  train:
+    enabled: true
+    class_ids: [6]
+    polygon:
+      - [0.05, 0.58]
+      - [0.95, 0.58]
+      - [1.00, 1.00]
+      - [0.00, 1.00]
+    present_confirm_s: 0.5
+    absent_confirm_s: 2.0
+
+  line_crossings:
+    - name: "platform_boundary"
+      line:
+        - [0.20, 0.55]
+        - [0.85, 0.55]
+      # From negative signed side to positive side, then the reverse.
+      direction_labels: ["entering_off_limits", "leaving_off_limits"]
+      prohibited_direction: "entering_off_limits"
+      require_train_absent: true
+      class_ids: [0]
+      cooldown_s: 2.0
+      hysteresis: 0.006
+      color: [0, 0, 255]
+
+  restricted_zones:
+    - name: "track_area"
+      polygon:
+        - [0.10, 0.60]
+        - [0.90, 0.60]
+        - [0.98, 0.98]
+        - [0.02, 0.98]
+      class_ids: [0]
+      entry_grace_s: 0.5
+      repeat_interval_s: 30.0
+      severity: "critical"
+      color: [0, 0, 255]
+
+  crowd_zones:
+    - name: "platform_waiting_area"
+      polygon:
+        - [0.10, 0.15]
+        - [0.90, 0.15]
+        - [0.90, 0.90]
+        - [0.10, 0.90]
+      area_m2: null
+      warning_density: 1.5
+      critical_density: 2.5
+      hold_s: 3.0
+      cooldown_s: 30.0
+      color: [0, 165, 255]

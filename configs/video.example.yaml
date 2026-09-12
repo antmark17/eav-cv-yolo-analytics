@@ -1,0 +1,135 @@
+# Profilo generico per video locali.
+# Le geometrie line_crossings/crowd_zones dipendono dall'inquadratura e vanno
+# calibrate sul video. I profili specifici camera possono restare separati.
+source:
+  mode: stream
+  uri: "videos/clip.mp4"
+  target_fps: 0
+  reconnect_delay_s: 1
+  startup_timeout_s: 15
+  max_frame_age_s: null
+
+model:
+  weights: "yolo12n.pt"
+  device: "auto"
+  confidence: 0.40
+  iou: 0.50
+  image_size: 640
+  tracker: "bytetrack.yaml"
+  # COCO: person=0, animals=14..23, backpack=24, handbag=26, suitcase=28.
+  classes: [0, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 28]
+  quantize: null
+
+analytics:
+  roi: null
+  person_class_ids: [0]
+  reference_point: "bottom_center"
+  tail_length: 60
+  track_ttl_s: 3.0
+  scene_area_m2: null
+
+  # ATTRAVERSAMENTO BINARI
+  # Aggiungere una o piu linee sulla specifica inquadratura. Esempio:
+  # line_crossings:
+  #   - name: "accesso_binari"
+  #     line: [[0.10, 0.65], [0.90, 0.65]]
+  #     direction_labels: ["verso_binari", "verso_banchina"]
+  #     class_ids: [0]
+  #     prohibited_direction: "verso_binari"
+  #     require_train_absent: false
+  #     cooldown_s: 2.0
+  line_crossings: null
+  restricted_zones: null
+  zones: null
+
+  # SOVRAFFOLLAMENTO
+  # Il frontend riceve crowd_density SOLO quando il livello e "critical".
+  # area_m2 e polygon devono essere reali/calibrati; senza area non viene
+  # inventata una densita fisica.
+  # crowd_zones:
+  #   - name: "banchina_1"
+  #     polygon: [[0.05,0.20],[0.95,0.20],[0.95,0.90],[0.05,0.90]]
+  #     area_m2: 120.0
+  #     warning_density: null
+  #     critical_density: 1.5
+  #     hold_s: 3.0
+  #     cooldown_s: 30.0
+  crowd_zones: null
+
+  # BAGAGLIO ABBANDONATO - obbligatorio nel perimetro corrente.
+  luggage:
+    enabled: true
+    person_class_ids: [0]
+    object_class_ids: [24, 26, 28]
+    stationary_s: 4.0
+    unattended_s: 15.0
+    max_motion_norm: 0.018
+    association_distance_norm: 0.12
+    association_confirm_s: 0.6
+    owner_distance_norm: 0.16
+    owner_missing_grace_s: 2.0
+    owner_reassociation_window_s: 3.0
+    owner_reassociation_distance_norm: 0.08
+    owner_reassociation_confirm_s: 0.4
+    # false: segnala anche un bagaglio gia solo all'ingresso in scena.
+    require_owner_association: false
+    cooldown_s: 60.0
+
+  # ANIMALE NON SUPERVISIONATO
+  animal:
+    enabled: true
+    animal_class_ids: [14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+    association_distance_norm: 0.18
+    association_confirm_s: 0.6
+    supervision_distance_norm: 0.24
+    owner_missing_grace_s: 2.0
+    owner_reassociation_window_s: 3.0
+    owner_reassociation_distance_norm: 0.10
+    owner_reassociation_confirm_s: 0.4
+    unsupervised_s: 10.0
+    # false: puo segnalare anche un animale che appare gia senza supervisore.
+    require_owner_association: false
+    cooldown_s: 60.0
+
+  train:
+    enabled: false
+    class_ids: [6]
+    polygon: null
+    present_confirm_s: 0.5
+    absent_confirm_s: 2.0
+
+  litter:
+    enabled: false
+    class_ids: []
+    polygon: null
+  dangerous_objects:
+    enabled: false
+    class_ids: []
+    polygon: null
+  vandalism:
+    enabled: false
+    class_ids: []
+    polygon: null
+  fall_on_tracks:
+    enabled: false
+    polygon: null
+
+  # Sensore/camera offline NON fa parte del feed frontend di questa modalita.
+  health:
+    enabled: false
+
+output:
+  display: false
+  window_name: "EAV Video Analytics"
+  display_scale: 1.0
+  video_path: "outputs/annotated_video.mp4"
+  video_fps: null
+  # In modalita video questo JSONL contiene solo record che hanno eventi.
+  jsonl_path: "outputs/video_events.jsonl"
+  event_frames_dir: "outputs/event_frames"
+  draw_tails: true
+  show_confidence: true
+  status_every_s: 2.0
+
+team_b:
+  enabled: false

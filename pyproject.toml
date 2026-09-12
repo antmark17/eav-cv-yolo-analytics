@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eav-smart-station-analytics"
+version = "0.8.0"
+description = "Local video analytics with event-only live feed for EAV Smart Station"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "torch==2.14.0",
+  "torchvision==0.29.0",
+  "ultralytics>=8.4.147,<8.5",
+  "opencv-python>=4.8,<5",
+  "numpy>=1.24,<3",
+  "PyYAML>=6.0,<7",
+  "requests>=2.31,<3",
+  "yt-dlp[default]>=2025.7.21",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["crowd_monitor*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
