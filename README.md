@@ -1,4 +1,29 @@
-# EAV AI 0.8.0
+# EAV CV YOLO Analytics
+
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/PyTorch-2.14-EE4C2C?logo=pytorch&logoColor=white" alt="PyTorch">
+  <img src="https://img.shields.io/badge/Ultralytics-YOLO-111F68?logo=yolo&logoColor=white" alt="Ultralytics YOLO">
+  <img src="https://img.shields.io/badge/OpenCV-4.8%2B-5C3EE8?logo=opencv&logoColor=white" alt="OpenCV">
+  <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black" alt="React">
+  <img src="https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white" alt="Next.js">
+  <img src="https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Node.js-22%2B-5FA04E?logo=nodedotjs&logoColor=white" alt="Node.js">
+</p>
+
+
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Computer%20Vision-YOLO-blue" alt="Computer Vision">
+  <img src="https://img.shields.io/badge/GPU-CUDA-76B900?logo=nvidia&logoColor=white" alt="CUDA">
+  <img src="https://img.shields.io/badge/Inference-FP16-orange" alt="FP16">
+  <img src="https://img.shields.io/badge/Video-Real--Time-red" alt="Real-Time Video">
+  <img src="https://img.shields.io/badge/Tracking-ByteTrack-purple" alt="ByteTrack">
+  <img src="https://img.shields.io/badge/Project-EAV%20×%20Cisco%20DTLab-success" alt="EAV Cisco DTLab">
+</p>
+
+
 
 Applicazione per analizzare video di stazione e gestire segnalazioni di affollamento, attraversamento delle linee, bagagli incustoditi e animali non sorvegliati.
 
