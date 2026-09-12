@@ -271,3 +271,5 @@ These files are not all loaded during the standard video run, but they are not u
 All four test videos are kept only in the local development environment and remain excluded from Git.
 
 The legacy dashboard, its startup scripts, the previous editors, and separate camera preview/verification scripts were removed. The maintained interface is the current frontend together with the AI Console.
+This project is licensed under the GNU Affero General Public License v3.0
+(AGPL-3.0). See [LICENSE](LICENSE) for details.
